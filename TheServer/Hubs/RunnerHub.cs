@@ -7,6 +7,9 @@ namespace TheServer.Hubs
     public class RunnerHub : Hub
     {
         public async Task RunnerCompleted(string id, TimeSpan runningTime)
-            => await Clients.All.SendAsync("RunnerCompletedMessage", id, runningTime);
+        {
+            Console.WriteLine($"Received: {id} - {runningTime}");
+            await Clients.All.SendAsync("RunnerCompletedMessage", id, runningTime);
+        }
     }
 }
