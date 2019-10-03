@@ -29,7 +29,7 @@ namespace TheSenderClient
 
                 var runningtime = DateTime.Now - starttime;
 
-                await connection.SendAsync("RunnerCompleted", input, runningtime);
+                await connection.SendAsync("RunnerCompleted", input, runningtime.ToString());
             }
         }
     }

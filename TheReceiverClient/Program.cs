@@ -14,7 +14,7 @@ namespace TheReceiverClient
                 .WithAutomaticReconnect()
                 .Build();
 
-            connection.On<string, TimeSpan>("RunnerCompletedMessage", (id, runningTime) =>
+            connection.On<string, string>("RunnerCompletedMessage", (id, runningTime) =>
             {
                 WriteLine($"Runner: {id} ran for {runningTime}");
             });
