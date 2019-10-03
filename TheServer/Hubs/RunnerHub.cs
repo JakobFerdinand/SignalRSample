@@ -11,5 +11,12 @@ namespace TheServer.Hubs
             Console.WriteLine($"Received: {id} - {runningTime}");
             await Clients.All.SendAsync("RunnerCompletedMessage", id, runningTime);
         }
+
+        public override Task OnConnectedAsync()
+        {
+            Console.WriteLine($"ConnectionId: {Context.ConnectionId}");
+            Console.WriteLine($"User: {Context.UserIdentifier}");
+            return base.OnConnectedAsync();
+        }
     }
 }
