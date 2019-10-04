@@ -1,15 +1,25 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
+using TheServer.Models;
+using TheServer.Services;
 
 namespace TheServer.Hubs
 {
     public class RunnerHub : Hub
     {
-        public async Task RunnerCompleted(string id, string runningTime)
+        private readonly IRunnerService runnerService;
+
+        public RunnerHub(IRunnerService runnerService)
+            => this.runnerService = runnerService;
+
+        public async Task RunnerCompleted(string runningTime)
         {
-            Console.WriteLine($"Received: {id} - {runningTime}");
-            await Clients.All.SendAsync("RunnerCompletedMessage", id, runningTime);
+            var runner = await runnerService.InsertOne(runningTime);
+            var count = await runnerService.Count();
+            Console.WriteLine($"Received: {runner.Id} - {runner.RunningTime}");
+            Console.WriteLine($"Runners in db: {count}");
+            await Clients.All.SendAsync("RunnerCompletedMessage", runner.Id, runner.RunningTime);
         }
 
         public override Task OnConnectedAsync()

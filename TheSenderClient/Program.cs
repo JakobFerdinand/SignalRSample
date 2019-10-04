@@ -10,7 +10,7 @@ namespace TheSenderClient
         static async Task Main(string[] args)
         {
             var connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/runnerHub")
+                .WithUrl("http://localhost:8181/runnerHub")
                 .WithAutomaticReconnect()
                 .Build();
 
@@ -29,7 +29,7 @@ namespace TheSenderClient
 
                 var runningtime = DateTime.Now - starttime;
 
-                await connection.SendAsync("RunnerCompleted", input, runningtime.ToString());
+                await connection.SendAsync("RunnerCompleted", runningtime.ToString());
             }
         }
     }

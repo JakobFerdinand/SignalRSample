@@ -1,9 +1,11 @@
-version: '3'
+version: '3.4'
+
 services:
-  app:
-    container_name: docker-theserver-mongo
-    restart: always
-    build: .
+  theserver:
+    image: ${DOCKER_REGISTRY-}theserver
+    build:
+      context: .
+      dockerfile: TheServer/dockerfile
     ports:
       - '8181:80'
     links:

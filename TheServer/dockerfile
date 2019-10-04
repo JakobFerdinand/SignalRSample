@@ -1,4 +1,20 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0.0-alpine
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-alpine AS base
 WORKDIR /app
-COPY /app /app
-ENTRYPOINT [ "dotnet" , "TheServer.dll" ]
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-alpine AS build
+WORKDIR /src
+COPY ["TheServer/TheServer.csproj", "TheServer/"]
+RUN dotnet restore "TheServer/TheServer.csproj"
+COPY . .
+WORKDIR "/src/TheServer"
+RUN dotnet build "TheServer.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "TheServer.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "TheServer.dll"]
