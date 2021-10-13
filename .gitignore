@@ -354,3 +354,7 @@ MigrationBackup/
 
 # Custom
 .env
+
+# Elm
+elm-stuff/
+dist/
