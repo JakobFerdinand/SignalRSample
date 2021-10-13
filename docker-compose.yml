@@ -10,8 +10,17 @@ services:
       - '8181:80'
     links:
       - mongo
+
   mongo:
     container_name: mongo
     image: mongo
     ports:
       - '27017:27017'
+        
+  theserverclient:
+    image: ${DOCKER_REGISTRY-}theserverclient
+    build:
+      context: .
+      dockerfile: TheServerClient/dockerfile
+    ports:
+      - '8182:80'
