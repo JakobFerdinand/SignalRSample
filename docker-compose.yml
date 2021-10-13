@@ -24,3 +24,5 @@ services:
       dockerfile: TheServerClient/dockerfile
     ports:
       - '8182:80'
+    depends_on:
+      - theserver

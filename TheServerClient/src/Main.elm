@@ -9,7 +9,7 @@ import Html exposing (Html)
 -- MAIN
 
 
-main : Program () Model Msg
+main : Program Int Model Msg
 main =
     Browser.document
         { init = init
@@ -24,16 +24,16 @@ type Msg
 
 
 type alias Model =
-    ()
+    Int
 
 
 
 -- INIT
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( (), Cmd.none )
+init : Int -> ( Model, Cmd Msg )
+init flags =
+    ( flags, Cmd.none )
 
 
 
@@ -66,6 +66,7 @@ view model =
                 , spacing 20
                 ]
                 [ text "Hello World"
+                , text (String.fromInt model)
                 ]
         ]
     }

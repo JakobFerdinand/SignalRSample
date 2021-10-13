@@ -12,6 +12,8 @@ namespace TheServer
 {
     public class Startup
     {
+        private const string AllowAnyOrigin = "_allowAnyOrigin";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,6 +25,14 @@ namespace TheServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowAnyOrigin, builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.Configure<RunnersDatabaseSettings>(Configuration.GetSection(nameof(RunnersDatabaseSettings)));
             services.AddSingleton<IRunnersDatabaseSettings>(sp => sp.GetRequiredService<IOptions<RunnersDatabaseSettings>>().Value);
             services.AddSingleton<IRunnerService, RunnerService>();
@@ -39,6 +49,7 @@ namespace TheServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(AllowAnyOrigin);
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
