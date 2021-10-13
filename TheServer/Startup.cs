@@ -56,7 +56,7 @@ namespace TheServer
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Welcome to the SignalR Server!");
                 });
                 endpoints.MapHub<RunnerHub>("/runnerHub");
                 endpoints.MapControllers();
