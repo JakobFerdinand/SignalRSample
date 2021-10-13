@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import Element exposing (..)
@@ -20,11 +20,17 @@ main =
 
 
 type Msg
-    = DoNothing
+    = ReceivedMessage Message
+
+
+type alias Message =
+    { user : String
+    , message : String
+    }
 
 
 type alias Model =
-    Int
+    List Message
 
 
 
@@ -33,7 +39,7 @@ type alias Model =
 
 init : Int -> ( Model, Cmd Msg )
 init flags =
-    ( flags, Cmd.none )
+    ( [], Cmd.none )
 
 
 
@@ -43,8 +49,8 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        DoNothing ->
-            ( model, Cmd.none )
+        ReceivedMessage message ->
+            ( [ message ] |> List.append model, Cmd.none )
 
 
 
@@ -65,13 +71,18 @@ view model =
                 , centerY
                 , spacing 20
                 ]
-                [ text "Hello World"
-                , text (String.fromInt model)
-                ]
+                (model |> List.map (\m -> m.user ++ " " ++ m.message) |> List.map text)
         ]
     }
 
 
+
+-- PORTS
+
+
+port messageReceiver : (Message -> msg) -> Sub msg
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    messageReceiver ReceivedMessage

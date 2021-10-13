@@ -32,13 +32,21 @@
 
 			connection.on("RunnerCompletedMessage", (user, message) => console.log(message));
 		}
-		
-		start();
 
 		var app = Elm.Main.init({
 			node: document.getElementById("theApp"),
 			flags: Date.now()
 		});
+
+		connection.on("RunnerCompletedMessage", (user, message) => {
+		 	app.ports.messageReceiver.send({
+				 user: user,
+				 message: message
+			 });
+		});
+
+		start();
+
 	</script>
 </body>
 
